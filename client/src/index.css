@@ -88,7 +88,7 @@ span a {
 .home_page {
   height: 100vh;
   width: 100vw;
-  background: #000;
+  background: #ec07ba;
   color: white;
   display: flex;
   justify-content: center;
@@ -104,7 +104,7 @@ span a {
 }
 
 .home_page button {
-  background-color: rgb(27, 73, 83);
+  background-color: rgb(235, 9, 66);
   color: #fff;
   cursor: pointer;
   padding: 1rem 3rem;
@@ -127,4 +127,19 @@ span a {
     padding: 0.6rem 1rem;
     font-size: 1.5rem;
   }
+}
+
+/* Add this to your CSS file or include it as inline styles */
+
+.card-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
 }
