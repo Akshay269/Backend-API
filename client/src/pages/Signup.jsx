@@ -11,10 +11,13 @@ const Signup = () => {
     username: "",
   });
   const { email, password, username } = inputValue;
+
+  //Event Handlers
+  //here e represents interaction of the user with the form
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setInputValue({
-      ...inputValue,
+    setInputValue({ //setInputValue is a function that takes an object as an argument usestate function
+      ...inputValue, //spread operator to make a shallow copy of the object
       [name]: value,
     });
   };
@@ -23,13 +26,14 @@ const Signup = () => {
     toast.error(err, {
       position: "bottom-left",
     });
+    
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "bottom-right",
     });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
     try {
       const { data } = await axios.post(
         "http://localhost:4000/signup",
@@ -38,9 +42,11 @@ const Signup = () => {
         },
         { withCredentials: true }
       );
-      const { success, message } = data;
+
+      const { success, message } = data;// to further check response of backend
       if (success) {
         handleSuccess(message);
+         // After a short delay, navigate to the login page
         setTimeout(() => {
           navigate("/");
         }, 1000);
@@ -50,6 +56,7 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
     }
+    //Reset the form
     setInputValue({
       ...inputValue,
       email: "",

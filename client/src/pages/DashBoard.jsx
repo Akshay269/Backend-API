@@ -5,27 +5,30 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Card from "../components/Card";
 
-const Home = () => {
+const DashBoard = () => {
+
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("");
+
   useEffect(() => {
     const verifyCookie = async () => {
       if (!cookies.token) {
         navigate("/login");
       }
-      const { data } = await axios.post(
+      const { data } = await axios.post( //backend pe req jaari hai
         "http://localhost:4000",
         {},
         { withCredentials: true }
       );
       const { status, user } = data;
-      setUsername(user);
+      setUsername(user);//set the username received from backend
+
       return status
         ? toast(`Hello ${user}`, {
             position: "top-right",
           })
-        : (removeCookie("token"), navigate("/login"));
+        : (removeCookie("token"), navigate("/login")); //If the server response indicates failure, remove the token cookie, and redirect the user to the login page.
     };
     verifyCookie();
   }, [cookies, navigate, removeCookie]);
@@ -51,4 +54,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default DashBoard;
