@@ -1,13 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const ImageSchema = new mongoose.Schema({
-  filename: {
-    type: String,
-    required: true,
-  },
-});
-
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -22,12 +15,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Your password is required"],
   },
-  images: [ImageSchema],
+  images: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Image' 
+  }],
   createdAt: {
     type: Date,
     default: new Date(),
   },
 });
+
 
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 12);

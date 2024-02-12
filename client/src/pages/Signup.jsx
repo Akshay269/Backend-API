@@ -36,7 +36,7 @@ const Signup = () => {
     e.preventDefault(); // Prevent the default form submission behavior
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/signup",
+        "http://localhost:4000/api/v1/signup",
         {
           ...inputValue,
         },
@@ -48,7 +48,7 @@ const Signup = () => {
         handleSuccess(message);
          // After a short delay, navigate to the login page
         setTimeout(() => {
-          navigate("/");
+          navigate("/login");
         }, 1000);
       } else {
         handleError(message);

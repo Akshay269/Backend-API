@@ -1,6 +1,11 @@
 const User = require("../Models/UserModel");
 const { createSecretToken } = require("../util/SecretToken");
 const bcrypt = require("bcryptjs");
+const Image = require("../Models/ImageModel");
+const multer = require("multer");
+const path = require("path");
+
+
 
 module.exports.Signup = async (req, res, next) => {
   try {
@@ -17,7 +22,7 @@ module.exports.Signup = async (req, res, next) => {
     });
     res
       .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
+      .json({ message: "User Registered successfully", success: true, user });
     next();
   } catch (error) {
     console.error(error);
@@ -43,13 +48,11 @@ module.exports.Login = async (req, res, next) => {
       withCredentials: true,
       httpOnly: false,
     });
-    res
-      .status(201)
-      .json({
-        message: "User logged in successfully",
-        success: true,
-        tokens: { token, userId: user._id },
-      });
+    res.status(201).json({
+      message: "User logged in successfully",
+      success: true,
+      tokens: { token, userId: user._id },
+    });
     next();
   } catch (error) {
     console.error(error);
@@ -69,5 +72,36 @@ module.exports.Logout = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
+  }
+};
+
+module.exports.uploadImage = async (req, res, next) => {
+  try {
+    // console.log(req.user, '#######');
+    const userId = req.user._id;
+    // console.log(userId, "userId")
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    req.files.forEach(async (file) => {
+      const image = new Image({
+        user: userId,
+        filename: file.filename,
+      });
+
+      await image.save();
+
+      user.images.push(image._id);
+    });
+
+    await user.save();
+
+    return res.status(201).json({ message: "Images uploaded successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
